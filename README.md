@@ -21,4 +21,4 @@ Run data_analysis.py to get the time-series distribution and Pearson's r graph o
 python data_analysis.py
 ```
 
-<div align=center><img src="image/USA.png" width="500"></div>
+<div align=center><img src="data_figure_analysis/output/USA.png" width="500"></div>
