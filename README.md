@@ -29,11 +29,7 @@ python data_analysis.py
 
 For the model, go to the corresponding path mentioned above and run it by below example  
 ```python
-<<<<<<< HEAD
-python main.py --normalize 1 --epochs 2000 --data ./data/daily_cases.txt --tweets tweets_cases.txt --model RNNCON_Res \
-=======
 python main.py --normalize 1 --epochs 2000 --data ./data/daily_cases.txt --tweets ./data/tweets_cases.txt --model RNNCON_Res \
->>>>>>> a3d2708a94220477a55186717ad0a6efad9cfe7d
 --dropout 0.5 --ratio 0.01 --residual_window 4 --save_dir save --save_name rnncon_res.w-16.h-20.ratio.0.01.hw-4.pt \
 --horizon 20 --window 16 --metric 0
 ```
