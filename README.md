@@ -25,6 +25,7 @@ Then run data_analysis.py to get the time-series distribution and Pearson's r gr
 ```python
 python data_analysis.py
 ```
+A jupyter notebook version of data figure analysis can be found here: <https://github.com/FU-CHANG-KAI/Time_series_prediction-Covid-19/blob/master/data_figure_analysis/notebook/Figure%20Data%20Analysis.ipynb> 
 <div align=center><img src="data_figure_analysis/output/USA.png" width="500"></div>
 
 For the model, go to the corresponding path mentioned above and run it by below example  
