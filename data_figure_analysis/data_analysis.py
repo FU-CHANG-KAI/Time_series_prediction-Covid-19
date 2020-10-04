@@ -1,7 +1,10 @@
 import pandas
+import numpy as np
 import os
 from function import helper
 from function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV
+
+parent_path = os.path.abspath(os.pardir)
 
 states_full = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California',
  'Colorado','Connecticut','Delaware','Diamond Princess','District of Columbia','Florida','Georgia',
@@ -21,7 +24,26 @@ states_abb = ["AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DI", "DC", 
             "TN", "TX", "UT", "VT", "VI", "VA", "WA", "WV", "WI", "WY"]
 
 
+# Preproces COVID-19 daily confirmed cases 
+confirm = pandas.read_csv('./data/time_series_covid19_confirmed_US.csv')
+dates = confirm.columns[11:]
+total_confirm_sum= []
+for date in dates:
+    date_confirm_sum= []
+    for state in states_full:
+        state_cases = sum(confirm[confirm.Province_State == state][date].values)
+        date_confirm_sum.append(state_cases)
+    total_confirm_sum.append(date_confirm_sum)
+confirm_states = pandas.DataFrame(total_confirm_sum, columns = states_full)
+confirm_states.index
 
+daily_cases = confirm_states.astype(np.int64)
+daily_cases = daily_cases.diff().fillna(0)
+### DataFrame to .txt file without header and idnex
+daily_cases.to_csv(parent_path + '/time_series_models/data/daily_cases.txt', sep=',', index=False, header = 0)
+
+
+# Preprocess twitter data
 df_list = []
 try:
     df_usa = pandas.read_csv(TWEETS_FILE_CSV_MERGE)
