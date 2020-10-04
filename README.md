@@ -35,4 +35,4 @@ python main.py --normalize 1 --epochs 2000 --data ./data/daily_cases.txt --tweet
 ```
 
 ## Dependencies
-python == 3.7, numpy and pandas
+python == 3.7, pytorch == 1.6.0+cpu, numpy and pandas
