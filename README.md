@@ -11,14 +11,25 @@ Besides, dense residual links can effectively restrain over-fitting problem and 
 In summary, the proposed RNNCON-Res model demonstrates dominating capability in country-level prediction 20 days ahead. 
 
 # How to Run
-cd data_figure_analysis/data/tweets and Download tweets related to COVID-19 i.e Coronavirus, Coronaoutbreak and COVID191 through script tweets.sh
+The repository consists of two parts: data figure analysis and the proposed model. The corresponding paths to two main parts are
+```python
+cd data_figure_analysis
+cd time_series_models
+```
+Firstly, download tweets related to COVID-19 i.e Coronavirus, Coronaoutbreak and COVID191 through script tweets.sh under data_figure_analysis/tweets
 ```python
 ./tweets.sh
 ```
 
-Run data_analysis.py to get the time-series distribution and Pearson's r graph of COVID-19 daily confirmed case and tweets volume as the below example in output file
+Then run data_analysis.py to get the time-series distribution and Pearson's r graph of COVID-19 daily confirmed case and tweets volume as the below example in output file
 ```python
 python data_analysis.py
 ```
-
 <div align=center><img src="data_figure_analysis/output/USA.png" width="500"></div>
+
+For the model, go to the corresponding path mentioned above and run it by below example  
+```python
+python main.py --normalize 1 --epochs 2000 --data ./data/daily_cases.txt --tweets tweets_cases.txt --model RNNCON_Res \
+--dropout 0.5 --ratio 0.01 --residual_window 4 --save_dir save --save_name rnncon_res.w-16.h-20.ratio.0.01.hw-4.pt \
+--horizon 20 --window 16 --metric 0
+```
