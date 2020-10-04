@@ -54,5 +54,5 @@ class Model(nn.Module):
 
         if self.output is not None:
             res = self.output(res).float()
-        #print("res = {}".format(res.shape))
+
         return res

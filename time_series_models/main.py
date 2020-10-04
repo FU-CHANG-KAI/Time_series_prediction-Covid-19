@@ -8,15 +8,15 @@ import time
 
 import torch
 import torch.nn as nn
-from time_series_models.models import AR, VAR, GAR, RNN
-from time_series_models.models import RNNCON_Res, RNN_Res, RNNCON
+from models import AR, VAR, GAR, RNN
+from models import RNNCON_Res, RNN_Res, RNNCON
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 import os
-from time_series_models.utils import *
-import time_series_models.Optim
+from utils import *
+import Optim
 import pickle
 
 states_full = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California',
@@ -109,7 +109,6 @@ def train(loader, data, model, criterion, optim, batch_size):
     for inputs in loader.get_batches(data, batch_size, True):
         counter += 1
         model.zero_grad();
-        #print("Shape of input = {}".format(inputs[0].shape))
         if args.tweets:
             X, Y, Z = inputs[0], inputs[1], inputs[2]
             output = model(X, Z);
@@ -128,7 +127,7 @@ def train(loader, data, model, criterion, optim, batch_size):
     return total_loss / n_samples
 
 def visual_plot(df1, df2): 
-    fig_save_dir = './time_series_models/figs/prediction-{}.h-{}.w-{}.rw-{}.m-{}.n-{}.png'.format(args.model, args.hidRNN, args.window, args.residual_window, args.metric, args.normalize)
+    fig_save_dir = './figs/prediction-{}.h-{}.w-{}.rw-{}.m-{}.n-{}.png'.format(args.model, args.hidRNN, args.window, args.residual_window, args.metric, args.normalize)
     plt.plot(df1, color = 'blue')
     plt.plot(df2, color = 'salmon')
     plt.savefig(fig_save_dir)
@@ -141,7 +140,6 @@ def convert_to_prediction_df(predict, Data):
     predict = predict.tolist()
     data = Data.rawdat[:142]
     n, m = data.shape
-    print("n = {}".format(n))
     data = data.tolist()
 
     predict_dict = {}
@@ -169,27 +167,27 @@ def convert_to_prediction_df(predict, Data):
     usa_count_true = [sum(df_true.iloc[i].tolist()) for i in range(df_true.shape[0])]
     df_true['usa'] = usa_count_true
     
-    save_dir = './time_series_models/figs/pickle/{}.pkl'.format(args.model)
+    save_dir = './figs/pickle/{}.pkl'.format(args.model)
     save(df_predict['usa'], save_dir)
 
 
-    save_dir = './time_series_models/figs/pickle/True value.pkl'
+    save_dir = './figs/pickle/True value.pkl'
     if not os.path.exists(save_dir):
         save(df_true['usa'], save_dir)
 
 
         # State level prediction
     for state in ['New York', 'New Jersey', 'Connecticut', 'Illinois', 'Michigan', 'Alabama', 'California', 'Arizona', 'Utah', 'North Carolina']:
-        fig_save_dir = './time_series_models/figs/pickle/{}/{}.pkl'.format(state, args.model)
+        fig_save_dir = './figs/pickle/{}/{}.pkl'.format(state, args.model)
         save(df_predict[state], fig_save_dir)
         print("predicted values are successfully saves in {}".format(state))
-        fig_exist_dir = './time_series_models/figs/pickle/{}/True value.pkl'.format(state)
+        fig_exist_dir = './figs/pickle/{}/True value.pkl'.format(state)
 
         save(df_true[state],fig_exist_dir)
 
 
 def visual_plot(df1, df2): 
-    fig_save_dir = './time_series_models/figs/predict/prediction-{}.h-{}.w-{}.rw-{}.m-{}.n-{}.png'.format(args.model, args.hidRNN, args.window, args.residual_window, args.metric, args.normalize)
+    fig_save_dir = './figs/predict/prediction-{}.h-{}.w-{}.rw-{}.m-{}.n-{}.png'.format(args.model, args.hidRNN, args.window, args.residual_window, args.metric, args.normalize)
     plt.plot(df1, color = 'blue')
     plt.plot(df2, color = 'salmon')
     plt.savefig(fig_save_dir)
@@ -268,7 +266,7 @@ if args.cuda:
 
 
 best_val = 10000000;
-optim = time_series_models.Optim.Optim(
+optim = Optim.Optim(
     model.parameters(), args.optim, args.lr, args.clip, weight_decay = args.weight_decay,
 )
 
@@ -310,28 +308,21 @@ with open(model_path, 'rb') as f:
 test_acc, test_rae, test_corr, predict  = evaluate(Data, Data.test, model, evaluateL2, evaluateL1, args.batch_size);
 print ("test rse {:5.4f} | test rae {:5.4f} | test corr {:5.4f}".format(test_acc, test_rae, test_corr))
 
-#for i in range(len(predict)):    
- #   print("predict = {}".format(sum(predict[i])))
-  #  print(sum(Data.rawdat[i+121]))
-#save_path = './figs/pickle.{}.h-{}.rw-{}.w-{}.r-{}.pkl'.format(args.model, args.horizon, args.residual_window, args.window, args.ratio))
 convert_to_prediction_df(predict, Data)
 
-if final_epoch != args.epochs:
-    val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch))
-    val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
-else:
-    val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, args.epochs + 1))
-    val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
+val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch))
+val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
 
+# Plot the consumtion number of epoch versus validation loss based on RMSE
 plt.plot(val_loss_epoch, color = 'blue')
 plt.xlabel('Epoch')
 plt.ylabel('RMSE loss')
-plt.savefig('./time_series_models/figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay))
+plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, hidRNN))
 plt.clf()
 
+# Plot the consumtion number of time\ versus validation loss based on RMSE
 plt.plot(val_loss_time, color = 'salmon')
 plt.xlabel('time(s)')
 plt.ylabel('RMSE loss')
-plt.savefig('./time_series_models/figs/loss-time.{}.h-{}.rw-{}.c-{}.wd-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay))
+plt.savefig('./figs/loss-time.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_deca, hidRNNy))
 plt.clf()
-#print("The last time stamp = {}".format(time_track[-1]))

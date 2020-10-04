@@ -17,9 +17,7 @@ class Model(nn.Module):
             self.output = F.tanh;
 
     def forward(self, x):
-        print(x.shape)
         x = x.view(-1, self.m * self.w);
-        print(x.shape)
         x = self.linear(x);
         if (self.output != None):
             x = self.output(x);
