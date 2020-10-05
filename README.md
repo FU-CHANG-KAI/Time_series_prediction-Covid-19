@@ -29,7 +29,7 @@ python data_analysis.py
 A jupyter notebook version of data figure analysis can be found here: <https://github.com/FU-CHANG-KAI/Time_series_prediction-Covid-19/blob/master/data_figure_analysis/notebook/Figure%20Data%20Analysis.ipynb> 
 <div align=center><img src="framework/USA.png" width="800"></div>
 
-2. For the model, go to the corresponding path mentioned above and run it by below example  
+2. For the model, go to the corresponding path mentioned and run it by below example  
 ```python
 cd time_series_models
 python main.py --normalize 1 --epochs 2000 --data ./data/daily_cases.txt --tweets ./data/tweets_cases.txt --model RNNCON_Res \
