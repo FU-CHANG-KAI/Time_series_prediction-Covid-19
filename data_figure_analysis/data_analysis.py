@@ -47,6 +47,8 @@ daily_cases.to_csv(parent_path + '/time_series_models/data/daily_cases.txt', sep
 df_list = []
 try:
     df_usa = pandas.read_csv(TWEETS_FILE_CSV_MERGE)
+    usa_tweets_count = helper._tweets_usa_case_time(df_usa)
+    usa_tweets_count.to_csv('./data/tweets_cases.txt')
 except:
     print("The file does not exists, will merge it now")
 if not os.path.exists(TWEETS_FILE_CSV_MERGE):
@@ -69,7 +71,8 @@ if not os.path.exists(TWEETS_FILE_CSV_MERGE):
 
 period = 30
 # Country level plot
-usa_tweets_count = helper._tweets_usa_case_time(df_usa)
+usa_tweets_count = pandas.read_csv('./data/tweets_cases.txt')
+print(usa_tweets_count)
 usa_daily_cases = helper._get_training_data_from_csv()['usa']
 helper._twin_axis_drawing('USA National', usa_daily_cases, usa_tweets_count )
 
