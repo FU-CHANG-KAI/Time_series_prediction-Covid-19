@@ -158,14 +158,8 @@ def _twin_axis_drawing(location, daily_case_series, tweets_count_series):
     par1.axis["right"].label.set_color(p2.get_color()) 
 
     plt.draw()  
-<<<<<<< HEAD
     plt.savefig(parent_path + "/data_figure_analysis/output/tweets \
 and new daily cases mapping - {}.png".format(location), bbox_inches = "tight")
-=======
-    plt.savefig(parent_path + "/data_figure_analysis/output/tweets\
-        and new daily cases mapping - {}.png".format(location)
-    , bbox_inches = "tight")
->>>>>>> a029cd85c5d8956cf343b75d5e14ac2edab9de94
     plt.clf()
 
 def average(x):
