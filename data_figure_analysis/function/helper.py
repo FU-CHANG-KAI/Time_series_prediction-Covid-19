@@ -78,6 +78,7 @@ def _get_usa_tweets_from_csv(df, states_full, states_abb):
 
     return df
 
+# Convert the merged twitter dataset to country level daily confirmed cases (100 x 1)
 def _tweets_usa_case_time(df):
     time_stamp = set(df.time)
     usa_count = []
@@ -87,8 +88,8 @@ def _tweets_usa_case_time(df):
     
     usa_count_df = pandas.DataFrame(usa_count, columns = ['daily_confirm'], index = set(df.time))
     return usa_count_df['daily_confirm'] # Return a DataFrame index = "time"
-    #return usa_count # directly return a list which is suitable for drawing
 
+# Convert the merged twitter dataset to regional level daily confirmed cases (100 x 58)
 def _tweets_state_case_time(df, state):
     time_stamp = set(df.time)
 
@@ -157,9 +158,8 @@ def _twin_axis_drawing(location, daily_case_series, tweets_count_series):
     par1.axis["right"].label.set_color(p2.get_color()) 
 
     plt.draw()  
-    plt.savefig(parent_path + "/data_figure_analysis/output/tweets\
-        and new daily cases mapping - {}.png".format(location)
-    , bbox_inches = "tight")
+    plt.savefig(parent_path + "/data_figure_analysis/output/tweets \
+and new daily cases mapping - {}.png".format(location), bbox_inches = "tight")
     plt.clf()
 
 def average(x):

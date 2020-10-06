@@ -47,8 +47,6 @@ daily_cases.to_csv(parent_path + '/time_series_models/data/daily_cases.txt', sep
 df_list = []
 try:
     df_usa = pandas.read_csv(TWEETS_FILE_CSV_MERGE)
-    usa_tweets_count = helper._tweets_usa_case_time(df_usa)
-    usa_tweets_count.to_csv('./data/tweets_cases.txt')
 except:
     print("The file does not exists, will merge it now")
 if not os.path.exists(TWEETS_FILE_CSV_MERGE):
@@ -58,7 +56,7 @@ if not os.path.exists(TWEETS_FILE_CSV_MERGE):
         df_usa_partition = _get_usa_tweets_from_csv(df, states_full, states_abb)
         n_partition= df_usa_partition.count()[0]
         print("In the process to merge the {}/11 file with length = {}".format(i, n_partition))
-        
+
         df_list.append(df_usa_partition)
         df_usa = pandas.concat(df_list)
 
@@ -71,8 +69,7 @@ if not os.path.exists(TWEETS_FILE_CSV_MERGE):
 
 period = 30
 # Country level plot
-usa_tweets_count = pandas.read_csv('./data/tweets_cases.txt')
-print(usa_tweets_count)
+usa_tweets_count = helper._tweets_usa_case_time(df_usa)
 usa_daily_cases = helper._get_training_data_from_csv()['usa']
 helper._twin_axis_drawing('USA National', usa_daily_cases, usa_tweets_count )
 
@@ -84,19 +81,16 @@ helper._twin_axis_drawing('USA National - log', usa_daily_cases_log, usa_tweets_
 helper.pearson_drawing('USA', period, usa_daily_cases, usa_tweets_count)
 
 # Reference: https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html
-# state level plot
-states = ['New York', 'New Jersey', 'Pennsylvania', 'Michigan', 'Connecticut', 'Massachusetts', 
-          'Maryland', 'Rhode Island', 'Illinois', 'District of Columbia', 'Vermont', 
-          'California', 'North Carolina', 'Utah', 'Arizona', 'Alabama']
 # Normal and log10 volumne plot
-for state in states:
+for state in states_full:
     state_tweets_count = helper._tweets_state_case_time(df_usa, state)
     state_daily_cases = helper._get_training_data_from_csv()[state]
-    helper._twin_axis_drawing(state, state_daily_cases, state_tweets_count)
+    #helper._twin_axis_drawing(state, state_daily_cases, state_tweets_count)
 
     state_tweets_count_log = helper._convert_to_log(state_tweets_count)
     state_daily_cases_log =  helper._convert_to_log(state_daily_cases)
     helper._twin_axis_drawing(state + ' - log', state_daily_cases_log, state_tweets_count_log)
-
-    helper.pearson_drawing(state, period, state_daily_cases, state_tweets_count)
-    #pearson_drawing(state, period, state_daily_cases_log, state_tweets_count_log)
+    #try:
+     #   helper.pearson_drawing(state, period, state_daily_cases, state_tweets_count)
+    #except:
+     #   print("Not enough data for {} to draw pearson's r".format(state))

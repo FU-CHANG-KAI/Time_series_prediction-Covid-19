@@ -35,27 +35,22 @@ def format_logs(raw_expression):
         print('horizon:{:2d}'.format(num), 'rmse: {:.4f}'.format(rse_list[index]), 'corr: {:.4f}'.format(cor_list[index]), 'best_model:', filenames[index])
 
 if __name__ == '__main__':
-    for data in ['hhs', 'regions']:
-        print('Dataset:', data)
-        # cnnrnn_res
-        print('*' * 40)
-        format_logs('./log/cnnrnn_res/cnnrnn_res.%s.hid-*.drop-*.w-*.h-{}.ratio-*.res-*.out' % (data))
-        print('*' * 40)
-        # cnnrnn
-        format_logs('./log/cnnrnn/cnnrnn.%s.hid-*.drop-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
-        # rnn
-        format_logs('./log/rnn/rnn.%s.hid-*.drop-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
-        # gar
-        format_logs('./log/gar/gar.%s.d-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
-        # ar
-        format_logs('./log/ar/ar.%s.d-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
-        # var
-        format_logs('./log/var/var.%s.d-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
-        # var_mask
-        format_logs('./log/var_mask/var_mask.%s.d-*.w-*.h-{}.out' %(data))
-        print('*' * 40)
+    # rnncon_res
+    print('*' * 40)
+    format_logs('./log/rnncon_res/rnncon_res.hid-*.drop-*.w-*.h-{}.ratio-*.res-*.out')
+    print('*' * 40)
+    # cnnrnn
+    format_logs('./log/rnn_res/rnn_reshid-*.drop-*.w-*.h-{}.out')
+    print('*' * 40)
+    # rnn
+    format_logs('./log/rnn/rnn.hid-*.drop-*.w-*.h-{}.out')
+    print('*' * 40)
+    # gar
+    format_logs('./log/gar/gar.d-*.w-*.h-{}.out')
+    print('*' * 40)
+    # ar
+    format_logs('./log/ar/ar.d-*.w-*.h-{}.out')
+    print('*' * 40)
+    # var
+    format_logs('./log/var/var.d-*.w-*.h-{}.out'
+    print('*' * 40)

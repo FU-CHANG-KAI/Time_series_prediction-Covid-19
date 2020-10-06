@@ -317,12 +317,14 @@ val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
 plt.plot(val_loss_epoch, color = 'blue')
 plt.xlabel('Epoch')
 plt.ylabel('RMSE loss')
-plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, hidRNN))
+plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
+.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
 plt.clf()
 
 # Plot the consumtion number of time\ versus validation loss based on RMSE
 plt.plot(val_loss_time, color = 'salmon')
 plt.xlabel('time(s)')
 plt.ylabel('RMSE loss')
-plt.savefig('./figs/loss-time.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_deca, hidRNNy))
+plt.savefig('./figs/loss-time.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
+.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
 plt.clf()
