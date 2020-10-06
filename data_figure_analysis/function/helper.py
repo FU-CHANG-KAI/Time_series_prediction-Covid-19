@@ -157,7 +157,8 @@ def _twin_axis_drawing(location, daily_case_series, tweets_count_series):
     par1.axis["right"].label.set_color(p2.get_color()) 
 
     plt.draw()  
-    plt.savefig(parent_path + "/data_figure_analysis/output/tweets and new daily cases mapping - {}.png".format(location)
+    plt.savefig(parent_path + "/data_figure_analysis/output/tweets\
+        and new daily cases mapping - {}.png".format(location)
     , bbox_inches = "tight")
     plt.clf()
 
