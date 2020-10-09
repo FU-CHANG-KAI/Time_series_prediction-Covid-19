@@ -66,3 +66,110 @@ if __name__ == "__main__":
         plt.savefig(fig_save_dir)
         plt.clf()
     print("Complete state level predicted figure")
+
+
+    # Training cycles comparison
+    fig, ax = plt.subplots(nrows = 2, ncols = 3, figsize=(10,5))
+    # h =1 
+    models = ['GAR', 'VAR', 'AR', 'RNNCON-Res']
+    epochs = [280, 1500, 200, 160]
+    ax[0][0].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[0][0].set_title("Number of timesteps = 1", fontsize=12)
+    ax[0][0].set_xlabel('model')
+    ax[0][0].set_ylabel('epoch')
+    ax[0][0].set_ylim(0, 1500)
+    # h=4
+    epochs = [330, 430, 300, 160]
+    ax[0][1].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[0][1].set_title("Number of timesteps = 4", fontsize=12)
+    ax[0][1].set_xlabel('model')
+    ax[0][1].set_ylabel('epoch')
+    ax[0][1].set_ylim(0, 1500)
+
+    # h = 8
+    epochs = [350, 450, 300, 160]
+    ax[0][2].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[0][2].set_title("Number of timesteps = 8", fontsize=12)
+    ax[0][2].set_xlabel('model')
+    ax[0][2].set_ylabel('epoch')
+    ax[0][2].set_ylim(0, 1500)
+
+    # h = 12
+    epochs = [195, 600, 120, 160]
+    ax[1][0].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[1][0].set_title("Number of timesteps = 12", fontsize=12)
+    ax[1][0].set_xlabel('model')
+    ax[1][0].set_ylabel('epoch')
+    ax[1][0].set_ylim(0, 1500)
+
+    # h = 16
+    epochs = [170, 600, 120, 179]
+    ax[1][1].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[1][1].set_title("Number of timesteps = 16", fontsize=12)
+    ax[1][1].set_xlabel('model')
+    ax[1][1].set_ylabel('epoch')
+    ax[1][1].set_ylim(0, 1500)
+
+    # h = 20
+    epochs = [300, 88, 400, 164]
+    ax[1][2].bar(models, epochs, color = ['g', 'b', 'y', 'r'], width = 0.4)
+    ax[1][2].set_title("Number of timesteps = 20", fontsize=12)
+    ax[1][2].set_xlabel('model')
+    ax[1][2].set_ylabel('epoch')
+    ax[1][2].set_ylim(0, 1500)
+
+    plt.subplots_adjust(wspace = 0.5, hspace = 0.7)
+    plt.savefig('./figs/Number of epoch to criterion.png')
+
+    # Visual ablation test
+    fig, ax = plt.subplots(nrows = 2, ncols = 3, figsize=(10,5))
+    # h =1 
+    models = ['RNN', 'RNN-Res', 'RNNCON-Res']
+    epochs = [612.20, 197.20, 202.77]
+    ax[0][0].bar(models, epochs, color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[0][0].set_title("Number of timesteps = 1", fontsize=12)
+    ax[0][0].set_xlabel('model')
+    ax[0][0].set_ylabel('RMSE loss')
+    ax[0][0].set_ylim(0, 650)
+    # h=4
+    epochs = [611.66, 220, 209.16]
+    ax[0][1].bar(models, epochs, color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[0][1].set_title("Number of timesteps = 4", fontsize=12)
+    ax[0][1].set_xlabel('model')
+    ax[0][1].set_ylabel('RMSE loss')
+    ax[0][1].set_ylim(0, 650)
+
+    # h = 8
+    epochs = [611.64, 251.25, 269.70]
+    ax[0][2].bar(models, epochs, color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[0][2].set_title("Number of timesteps = 8", fontsize=12)
+    ax[0][2].set_xlabel('model')
+    ax[0][2].set_ylabel('RMSE loss')
+    ax[0][2].set_ylim(0, 650)
+
+    # h = 12
+    epochs = [519.11, 322.26, 307.92]
+    ax[1][0].bar(models, epochs, color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[1][0].set_title("Number of timesteps = 12", fontsize=12)
+    ax[1][0].set_xlabel('model')
+    ax[1][0].set_ylabel('RMSE loss')
+    ax[1][0].set_ylim(0, 650)
+
+    # h = 16
+    epochs = [510, 308.43, 322.48]
+    ax[1][1].bar(models, epochs,color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[1][1].set_title("Number of timesteps = 16", fontsize=12)
+    ax[1][1].set_xlabel('model')
+    ax[1][1].set_ylabel('RMSE loss')
+    ax[1][1].set_ylim(0, 650)
+
+    # h = 20
+    epochs = [500, 343.63, 329.67]
+    ax[1][2].bar(models, epochs, color = ['cornflowerblue', 'lightskyblue', 'blue'], width = 0.4)
+    ax[1][2].set_title("Number of timesteps = 20", fontsize=12)
+    ax[1][2].set_xlabel('model')
+    ax[1][2].set_ylabel('RMSE loss')
+    ax[1][2].set_ylim(0, 650)
+
+    plt.subplots_adjust(wspace = 0.5, hspace = 0.7)
+    plt.savefig('./figs/Ablation tests.png')
