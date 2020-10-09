@@ -30,7 +30,8 @@ Temporary Items
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
-__pycache__/
+time_series_models/__pycache__/
+data_figure_analysis/__pycache__/
 *.py[cod]
 *$py.class
 
