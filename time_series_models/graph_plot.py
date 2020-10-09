@@ -120,6 +120,7 @@ if __name__ == "__main__":
 
     plt.subplots_adjust(wspace = 0.5, hspace = 0.7)
     plt.savefig('./figs/Number of epoch to criterion.png')
+    print("Complete saving the comparison of epochs consumption")
 
     # Visual ablation test
     fig, ax = plt.subplots(nrows = 2, ncols = 3, figsize=(10,5))
@@ -173,3 +174,4 @@ if __name__ == "__main__":
 
     plt.subplots_adjust(wspace = 0.5, hspace = 0.7)
     plt.savefig('./figs/Ablation tests.png')
+  print("Complete saving the comparison of ablation tests")
