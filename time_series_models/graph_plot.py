@@ -33,6 +33,7 @@ if __name__ == "__main__":
     style = ['dimgrey', 'y--', 'g--', 'b--', 'r--']
     for i in range(len(models)):
         df = load((path + models[i]))
+        print(df)
         if models[i] == 'True value.pkl':
             plt.plot(df.iloc[41:], style[i], label = models[i][:-4])
             continue

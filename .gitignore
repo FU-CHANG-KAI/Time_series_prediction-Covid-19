@@ -129,6 +129,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# output
+time_series_models/figs/
+time_series_models/save/
+
 #!! ERROR:  is undefined. Use list command to see defined gitignore types !!#
 
 
