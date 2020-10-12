@@ -313,7 +313,7 @@ convert_to_prediction_df(predict, Data)
 val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch))
 val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
 
-# Plot the consumtion number of epoch versus validation loss based on RMSE
+# Plot the consumption number of epoch versus validation loss based on RMSE
 plt.plot(val_loss_epoch, color = 'blue')
 plt.xlabel('Epoch')
 plt.ylabel('RMSE loss')
@@ -321,7 +321,7 @@ plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
 .format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
 plt.clf()
 
-# Plot the consumtion number of time\ versus validation loss based on RMSE
+# Plot the consumption number of time\ versus validation loss based on RMSE
 plt.plot(val_loss_time, color = 'salmon')
 plt.xlabel('time(s)')
 plt.ylabel('RMSE loss')

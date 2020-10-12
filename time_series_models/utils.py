@@ -19,11 +19,13 @@ class Data_utility(object):
             fin2 = open(args.tweets)
             self.twtdat = np.loadtxt(fin2,delimiter=',')
             self.tweets = args.tweets
+            self.TWTdat = np.zeros(self.twtdat.shape)
         else:
             self.tweets = None
 
         if (len(self.rawdat.shape)==1):
             self.rawdat = self.rawdat.reshape((self.rawdat.shape[0], 1))
+        
         self.dat = np.zeros(self.rawdat[41:141].shape)
         self.n, self.m = self.dat.shape
         self.normalize = args.normalize
@@ -41,14 +43,6 @@ class Data_utility(object):
             self.scale = self.scale.cuda()
         self.scale = Variable(self.scale)
 
-    def load_sim_mat(self, args):
-        self.adj = torch.Tensor(np.loadtxt(args.sim_mat, delimiter=','))
-        # normalize
-        rowsum = 1. / torch.sqrt(self.adj.sum(dim=0))
-        self.adj = rowsum[:, np.newaxis] * self.adj * rowsum[np.newaxis, :]
-        self.adj = Variable(self.adj)
-        if args.cuda:
-            self.adj = self.adj.cuda()
 
     def compute_metric(self, args):
         #use the normal rmse and mae when args.metric == 0
@@ -80,6 +74,8 @@ class Data_utility(object):
             for i in range(self.m):
                 self.scale[i] = np.max(np.abs(self.rawdat[41:141][:,i]))
                 self.dat[:,i] = self.rawdat[41:141][:,i] / np.max(np.abs(self.rawdat[41:141][:,i]))
+                if self.tweets:
+                    self.TWTdat[:,i] = self.twtdat[:,i] / np.max(np.abs(self.twtdat[:,i]))
 
 
     def _split(self, train, valid, test):
