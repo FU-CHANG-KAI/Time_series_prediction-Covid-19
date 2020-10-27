@@ -2,13 +2,12 @@ import pandas
 import numpy
 import os
 import math
-from nltk.corpus import stopwords
 from dateutil.parser import parse
 
 import matplotlib.pyplot as plt
 import mpl_toolkits.axisartist as AA
 from mpl_toolkits.axes_grid1 import host_subplot 
-from function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV, TRAIN_FILE
+from function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV, TRAIN_FILE, states_full
 
 parent_path = os.path.abspath(os.pardir)
 
@@ -184,7 +183,7 @@ def pearson_def(x, y):
 
     return diffprod / math.sqrt(xdiff2 * ydiff2)
 
-def pearson_drawing(location, period, daily_cases, tweets_count):
+def _pearson_drawing(location, period, daily_cases, tweets_count):
     tweets_count = tweets_count.tolist()
     day_index = [i for i in range(0, period+1)]
     pearson_list = []

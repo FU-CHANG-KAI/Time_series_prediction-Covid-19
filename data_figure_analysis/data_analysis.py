@@ -62,10 +62,10 @@ if not os.path.exists(TWEETS_FILE_CSV_MERGE):
         df_list.append(df_usa_partition)
         df_usa = pandas.concat(df_list)
 
-        df_usa.sort_values("time",inplace=True)
-        # Reset index
-        #df_usa = df_usa.reset_index()
-        df_usa.to_csv(TWEETS_FILE_CSV_MERGE)
+    df_usa.sort_values("time",inplace=True)
+    # Reset index
+    #df_usa = df_usa.reset_index()
+    df_usa.to_csv(TWEETS_FILE_CSV_MERGE)
     n = df_usa.count()[0]
     print("Successfully merge files with total length = {}".format(n))
 
@@ -81,7 +81,7 @@ usa_tweets_count_log = helper._convert_to_log(usa_tweets_count)
 usa_daily_cases_log =  helper._convert_to_log(usa_daily_cases)
 helper._twin_axis_drawing('USA National - log', usa_daily_cases_log, usa_tweets_count_log)
 
-helper.pearson_drawing('USA', period, usa_daily_cases, usa_tweets_count)
+helper._pearson_drawing('USA', period, usa_daily_cases, usa_tweets_count)
 
 # Reference: https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html
 # Normal and log10 volumne plot

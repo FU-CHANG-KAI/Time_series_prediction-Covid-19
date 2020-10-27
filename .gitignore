@@ -32,6 +32,7 @@ Temporary Items
 # Byte-compiled / optimized / DLL files
 time_series_models/__pycache__/
 data_figure_analysis/__pycache__/
+data_figure_analysis/function/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -97,6 +98,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+notebook/
 
 # pyenv
 .python-version
@@ -130,6 +132,8 @@ venv.bak/
 .mypy_cache/
 
 # output
+output
+data_figure_analysis/data/tweets/
 time_series_models/figs/
 time_series_models/save/
 
