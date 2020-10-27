@@ -133,7 +133,7 @@ venv.bak/
 
 # output
 output
-data_figure_analysis/data/tweets/
+data_figure_analysis/data/
 time_series_models/figs/
 time_series_models/save/
 
