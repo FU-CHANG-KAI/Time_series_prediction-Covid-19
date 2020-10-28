@@ -1,8 +1,12 @@
 import pandas
 import numpy as np
 import os
-from function import helper
-from function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV
+from data_figure_analysis.function.helper import _get_usa_tweets_from_csv, _get_training_data_from_csv
+from data_figure_analysis.function.helper import _tweets_usa_case_time, _tweets_state_case_time
+from data_figure_analysis.function.helper import _pearson_drawing, _convert_to_log, _twin_axis_drawing
+from data_figure_analysis.function import TRAIN_FILE, TWEETS_FILE_CSV_MERGE
+from data_figure_analysis.function import TWEETS_FILE_FINAL, TWEETS_FILE_CSV
+print(TRAIN_FILE)
 
 parent_path = os.path.abspath(os.pardir)
 
@@ -25,7 +29,7 @@ states_abb = ["AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DI", "DC", 
 
 
 # Preproces COVID-19 daily confirmed cases 
-confirm = pandas.read_csv('./data/time_series_covid19_confirmed_US.csv')
+confirm = pandas.read_csv(TRAIN_FILE)
 dates = confirm.columns[11:]
 total_confirm_sum= []
 for date in dates:
@@ -46,33 +50,34 @@ daily_cases.to_csv(parent_path + '/time_series_models/data/daily_cases.txt', sep
 # Preprocess twitter data
 df_list = []
 try:
-    df_usa = pandas.read_csv(TWEETS_FILE_CSV_MERGE)
-    usa_tweets_count = helper._tweets_usa_case_time(df_usa)
+    df_tweets_usa_merge = pandas.read_csv(TWEETS_FILE_CSV_MERGE)
+    usa_tweets_count = helper._tweets_usa_case_time(df_tweets_usa_merge)
     usa_tweets_count.to_csv('./data/tweets_cases.txt')
 except:
     print("The file does not exists, will merge it now")
-if not os.path.exists(TWEETS_FILE_CSV_MERGE):
-    for i in range(12):
-        PATH = TWEETS_FILE_CSV%i
-        df = pandas.read_csv(PATH)
-        df_usa_partition = _get_usa_tweets_from_csv(df, states_full, states_abb)
-        n_partition= df_usa_partition.count()[0]
-        print("In the process to merge the {}/11 file with length = {}".format(i, n_partition))
 
-        df_list.append(df_usa_partition)
-        df_usa = pandas.concat(df_list)
+#if not os.path.exists(TWEETS_FILE_CSV_MERGE):
+for i in range(12):
+    PATH = TWEETS_FILE_CSV%i
+    df = pandas.read_csv(PATH)
+    df_usa_partition = _get_usa_tweets_from_csv(df, states_full, states_abb)
+    n_partition= df_usa_partition.count()[0]
+    print("In the process to merge the {}/11 file with length = {}".format(i, n_partition))
 
-    df_usa.sort_values("time",inplace=True)
-    # Reset index
-    #df_usa = df_usa.reset_index()
-    df_usa.to_csv(TWEETS_FILE_CSV_MERGE)
-    n = df_usa.count()[0]
-    print("Successfully merge files with total length = {}".format(n))
+    df_list.append(df_usa_partition)
+    df_tweets_usa_merge = pandas.concat(df_list)
+
+df_tweets_usa_merge.sort_values("time",inplace=True)
+# Reset index
+#df_usa = df_usa.reset_index()
+df_tweets_usa_merge.to_csv(TWEETS_FILE_CSV_MERGE)
+n = df_usa.count()[0]
+print("Successfully merge files with total length = {}".format(n))
+
 
 period = 30
 # Country level plot
 usa_tweets_count = pandas.read_csv('./data/tweets_cases.txt')
-print(usa_tweets_count)
 usa_daily_cases = helper._get_training_data_from_csv()['usa']
 helper._twin_axis_drawing('USA National', usa_daily_cases, usa_tweets_count )
 

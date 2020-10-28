@@ -7,7 +7,7 @@ from dateutil.parser import parse
 import matplotlib.pyplot as plt
 import mpl_toolkits.axisartist as AA
 from mpl_toolkits.axes_grid1 import host_subplot 
-from function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV, TRAIN_FILE, states_full
+from data_figure_analysis.function import TWEETS_FILE_CSV_MERGE, TWEETS_FILE_CSV, TRAIN_FILE, states_full
 
 parent_path = os.path.abspath(os.pardir)
 
@@ -31,9 +31,6 @@ def _get_training_data_from_csv():
     
     # Convert daily confirmed total number to daily increase
     daily_cases = confirm_states.astype(numpy.int64)
-    # Check the confirmed cases at first day- 21 Jan 2020 which was not zero, Washington
-    # daily_cases.iloc[0]
-    daily_cases['Washington'][0] = 1
     daily_cases = daily_cases.diff().fillna(0)
     daily_cases['usa'] = daily_cases.apply(lambda x: x.sum(),axis=1)
 
@@ -44,11 +41,9 @@ def _get_usa_tweets_from_csv(df, states_full, states_abb):
     # Tweets location is "place": 
     # https://developer.twitter.com/en/docs/tutorials/filtering-tweets-by-location
     # 1. dropna NaN at feature "place"
-    print("1. dropna NaN at feature [place]")
     df = df.dropna(subset = ["place"])
 
     # 2. Keep tweets in USA when a new feature "place_filter" is True
-    print("2. Keep tweets in USA when a new feature [place_filter] is True")
     df["place_filter"] = df["place"].apply(lambda x: None if (x[:-6] not in states_full and x[-2:] not in states_abb) else True)
     
     df = df.dropna(subset = ["place_filter"])
@@ -157,8 +152,8 @@ def _twin_axis_drawing(location, daily_case_series, tweets_count_series):
     par1.axis["right"].label.set_color(p2.get_color()) 
 
     plt.draw()  
-    plt.savefig(parent_path + "/data_figure_analysis/output/tweets \
-and new daily cases mapping - {}.png".format(location), bbox_inches = "tight")
+    #plt.savefig(parent_path + "/data_figure_analysis/output/tweets \
+#and new daily cases mapping - {}.png".format(location), bbox_inches = "tight")
     plt.clf()
 
 def average(x):
