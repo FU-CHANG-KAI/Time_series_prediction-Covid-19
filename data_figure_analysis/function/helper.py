@@ -106,14 +106,6 @@ def _save_to_txt(id_list, index):
             output.write('%s' % id)
     print('Finish saving No.{} .txt file'.format(index))
 
-def _get_stop_words(strip_handles=False, strip_rt=False):
-    ''' Returns stopwords '''
-    stop_words = (stopwords.words('english'))
-    if strip_rt: stop_words += ['rt']
-    # TODO: if strip_handles
-    return set(stop_words)
-
-
 def _convert_to_log(daily_case_series):
     index =daily_case_series.index
     case_log = []
