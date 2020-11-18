@@ -311,8 +311,8 @@ print ("test rse {:5.4f} | test rae {:5.4f} | test corr {:5.4f}".format(test_acc
 
 convert_to_prediction_df(predict, Data)
 
-train_loss_epoch = pd.DataFrame(train_loss_lst, index = range(1, final_epoch))
-val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch))
+train_loss_epoch = pd.DataFrame(train_loss_lst, index = range(1, final_epoch+1))
+val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch+1))
 val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
 
 # Plot the consumption number of epoch versus validation loss based on RMSE
@@ -326,7 +326,7 @@ plt.plot(val_loss_epoch, color = 'salmon')
 plt.xlabel('Epoch')
 plt.ylabel('loss')
 plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.e-{}.png'\
-.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN, args.epochs))
+.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN, args.epochs, args.output_fun))
 plt.clf()
 
 # Plot the consumption number of time\ versus validation loss based on RMSE
@@ -334,5 +334,5 @@ plt.plot(val_loss_time, color = 'salmon')
 plt.xlabel('time(s)')
 plt.ylabel('RMSE loss')
 plt.savefig('./figs/loss-time.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
-.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
+.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN, args.output_fun))
 plt.clf()
