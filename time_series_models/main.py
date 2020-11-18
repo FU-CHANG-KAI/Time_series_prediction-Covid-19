@@ -97,7 +97,7 @@ def evaluate(loader, data, model, evaluateL2, evaluateL1, batch_size):
     scale = loader.scale.expand(PREDICT.shape[0], loader.m)
     PREDICT  = PREDICT  * scale
     PREDICT = PREDICT.data.numpy()
-    return rse, rae, correlation, PREDICT;
+    return rse, rae, correlation, PREDICT, total_loss / n_samples;
 
 
 def train(loader, data, model, criterion, optim, batch_size):
@@ -273,6 +273,7 @@ optim = Optim.Optim(
 try:
     print('begin training');
     val_loss_lst = []
+    train_loss_lst = []
     time_lst = []
     time_track = []
     final_epoch = 0
@@ -281,8 +282,9 @@ try:
         final_epoch += 1
         epoch_start_time = time.time()
         train_loss = train(Data, Data.train, model, criterion, optim, args.batch_size)
-        val_loss, val_rae, val_corr, __ = evaluate(Data, Data.valid, model, evaluateL2, evaluateL1, args.batch_size);
-        val_loss_lst.append(val_loss) 
+        train_loss_lst.append(train_loss)
+        val_loss, val_rae, val_corr, ___, val_loss_raw = evaluate(Data, Data.valid, model, evaluateL2, evaluateL1, args.batch_size);
+        val_loss_lst.append(val_loss_raw) 
         time_track.append(time_stamp + time.time() - epoch_start_time)
         time_stamp += (time.time() - epoch_start_time)
         print('| end of epoch {:3d} | time: {:5.2f}s | train_loss {:5.8f} | valid rse {:5.4f} | valid rae {:5.4f} | valid corr  {:5.4f}'.format(epoch, (time.time() - epoch_start_time), train_loss, val_loss, val_rae, val_corr))
@@ -293,7 +295,7 @@ try:
             with open(model_path, 'wb') as f:
                 torch.save(model.state_dict(), f)
             print('best validation');
-            test_acc, test_rae, test_corr, ____  = evaluate(Data, Data.test, model, evaluateL2, evaluateL1, args.batch_size);
+            test_acc, test_rae, test_corr, ____, ____  = evaluate(Data, Data.test, model, evaluateL2, evaluateL1, args.batch_size);
             print ("test rse {:5.4f} | test rae {:5.4f} | test corr {:5.4f}".format(test_acc, test_rae, test_corr))
 
 except KeyboardInterrupt:
@@ -304,20 +306,27 @@ except KeyboardInterrupt:
 model_path = '%s/%s.pt' % (args.save_dir, args.save_name)
 with open(model_path, 'rb') as f:
     model.load_state_dict(torch.load(f));
-test_acc, test_rae, test_corr, predict  = evaluate(Data, Data.test, model, evaluateL2, evaluateL1, args.batch_size);
+test_acc, test_rae, test_corr, predict, ____  = evaluate(Data, Data.test, model, evaluateL2, evaluateL1, args.batch_size);
 print ("test rse {:5.4f} | test rae {:5.4f} | test corr {:5.4f}".format(test_acc, test_rae, test_corr))
 
 convert_to_prediction_df(predict, Data)
 
+train_loss_epoch = pd.DataFrame(train_loss_lst, index = range(1, final_epoch))
 val_loss_epoch = pd.DataFrame(val_loss_lst, index = range(1, final_epoch))
 val_loss_time =  pd.DataFrame(val_loss_lst, index = time_track)
 
 # Plot the consumption number of epoch versus validation loss based on RMSE
-plt.plot(val_loss_epoch, color = 'blue')
+plt.plot(train_loss_epoch, color = 'blue')
 plt.xlabel('Epoch')
-plt.ylabel('RMSE loss')
-plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
-.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
+plt.ylabel('loss')
+#plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.png'\
+#.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN))
+
+plt.plot(val_loss_epoch, color = 'salmon')
+plt.xlabel('Epoch')
+plt.ylabel('loss')
+plt.savefig('./figs/loss-epoch.{}.h-{}.rw-{}.c-{}.wd-{}.hr-{}.e-{}.png'\
+.format(args.model, args.horizon, args.residual_window, args.clip, args.weight_decay, args.hidRNN, args.epochs))
 plt.clf()
 
 # Plot the consumption number of time\ versus validation loss based on RMSE
