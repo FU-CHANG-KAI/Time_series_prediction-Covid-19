@@ -174,4 +174,4 @@ if __name__ == "__main__":
 
     plt.subplots_adjust(wspace = 0.5, hspace = 0.7)
     plt.savefig('./figs/Ablation tests.png')
-  print("Complete saving the comparison of ablation tests")
+    print("Complete saving the comparison of ablation tests")
